@@ -266,5 +266,5 @@ SPI Forced Mode: with default settings
 
 ESP32 HSPI Normal Mode: sampling at 1 second standby time intervals with default settings
 
-SPI Normal Mode Mulitple: sampling multiple BMP280 devices at 2 second standby time intervals with default settings
+SPI Normal Mode Multiple: sampling multiple BMP280 devices at 2 second standby time intervals with default settings
 
