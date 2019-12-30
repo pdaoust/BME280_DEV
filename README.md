@@ -17,7 +17,7 @@ This BMP280_DEV library offers the following features:
 ## __Version__
 
 - Version 1.0.7 -- Use default arguments for begin() member function and 
-									 add example using multiple devices with SPI comms in NORMAL mode
+									 add example using multiple BMP280 devices with SPI comms in NORMAL mode
 - Version 1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
 - Version 1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 - Version 1.0.3 -- Change library name in the library.properties file
