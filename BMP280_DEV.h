@@ -123,7 +123,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 #ifdef ARDUINO_ARCH_ESP32
 		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
 #endif
-		uint8_t begin(Mode mode = SLEEP_MDOE, 												// Initialise the barometer with arguments
+		uint8_t begin(Mode mode = SLEEP_MODE, 												// Initialise the barometer with arguments
 									Oversampling presOversampling = OVERSAMPLING_X16, 
 									Oversampling tempOversampling = OVERSAMPLING_X2, 
 									IIRFilter iirFilter = IIR_FILTER_OFF, 
