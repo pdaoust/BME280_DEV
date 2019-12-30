@@ -9,6 +9,8 @@
 	V1.0.3 -- Change library name in the library.properties file
 	V1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 	V1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
+	V1.0.7 -- Use default arguments for begin() member function and 
+						add example code using multiple devices with SPI comms in NORMAL mode
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -67,20 +69,10 @@ uint8_t BMP280_DEV::begin(Mode mode, uint8_t addr)									// Initialise BMP280 
 	return begin(mode);
 }
 
-uint8_t BMP280_DEV::begin(Mode mode)																// Initialise BMP280 with default settings and selected mode
-{
-	return begin(mode, OVERSAMPLING_X16, OVERSAMPLING_X2, IIR_FILTER_OFF, TIME_STANDBY_05MS);
-}
-
 uint8_t BMP280_DEV::begin(uint8_t addr)															// Initialise BMP280 with default settings and selected I2C address
 {
 	setI2CAddress(addr);
-	return begin(SLEEP_MODE, OVERSAMPLING_X16, OVERSAMPLING_X2, IIR_FILTER_OFF, TIME_STANDBY_05MS);
-}
-
-uint8_t BMP280_DEV::begin()																					// Initialise BMP280 with default settings (place in SLEEP_MODE)
-{
-	return begin(SLEEP_MODE, OVERSAMPLING_X16, OVERSAMPLING_X2, IIR_FILTER_OFF, TIME_STANDBY_05MS);
+	return begin();
 }
 
 void BMP280_DEV::reset()																						// Reset the BMP280 barometer
