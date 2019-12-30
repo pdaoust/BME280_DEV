@@ -9,6 +9,8 @@
 	V1.0.3 -- Change library name in the library.properties file
 	V1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 	V1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
+	V1.0.7 -- Use default arguments for begin() member function and 
+						add example code using multiple devices with SPI comms in NORMAL mode		
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -121,15 +123,13 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 #ifdef ARDUINO_ARCH_ESP32
 		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
 #endif
-		uint8_t begin(Mode mode, 																		// Initialise the barometer with arguments
-									Oversampling presOversampling, 
-									Oversampling tempOversampling, 
-									IIRFilter iirFilter, 
-									TimeStandby timeStandby);
-		uint8_t begin(Mode mode);																		// Initialise the barometer specifying start mode with default initialisation
+		uint8_t begin(Mode mode = SLEEP_MDOE, 												// Initialise the barometer with arguments
+									Oversampling presOversampling = OVERSAMPLING_X16, 
+									Oversampling tempOversampling = OVERSAMPLING_X2, 
+									IIRFilter iirFilter = IIR_FILTER_OFF, 
+									TimeStandby timeStandby = TIME_STANDBY_05MS);
 		uint8_t begin(Mode mode, uint8_t addr);											// Initialise the barometer specifying start mode and I2C addrss
 		uint8_t begin(uint8_t addr);																// Initialise the barometer specifying I2C address with default initialisation
-		uint8_t begin();																						// Initialise the barometer in SLEEP_MODE with default initialisation
 		void reset();																								// Soft reset the barometer		
 		void startNormalConversion();																// Start continuous measurement in NORMAL_MODE
 		void startForcedConversion();															  // Start a one shot measurement in FORCED_MODE
