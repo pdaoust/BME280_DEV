@@ -16,6 +16,8 @@ This BMP280_DEV library offers the following features:
 
 ## __Version__
 
+- Version 1.0.7 -- Use default arguments for begin() member function and 
+									 add example using multiple devices with SPI comms in NORMAL mode
 - Version 1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
 - Version 1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 - Version 1.0.3 -- Change library name in the library.properties file
@@ -263,4 +265,6 @@ SPI Normal Mode: sampling at 2 second standby time intervals with default settin
 SPI Forced Mode: with default settings
 
 ESP32 HSPI Normal Mode: sampling at 1 second standby time intervals with default settings
+
+SPI Normal Mode Mulitple: sampling multiple BMP280 devices at 2 second standby time intervals with default settings
 
