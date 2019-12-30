@@ -9,7 +9,7 @@
 	V1.0.3 -- Change library name in the library.properties file
 	V1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 	V1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
-	V1.0.7 -- Use default arguments for begin() member function and 
+	V1.0.8 -- Use default arguments for begin() member function and 
 						add example using multiple BMP280 devices with SPI comms in NORMAL mode		
 	
 	The MIT License (MIT)
