@@ -1,16 +1,17 @@
 /*
-  BMP280 is an I2C/SPI compatible library for the Bosch BMP280 barometer.
+  BMP280_DEV is an I2C/SPI compatible library for the Bosch BMP280 barometer.
 	
 	Copyright (C) Martin Lindupp 2019
 	
 	V1.0.0 -- Initial release 		
 	V1.0.1 -- Added ESP32 HSPI support and change library to unique name
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
-	V1.0.3 -- Change library name in the library.properties file
+	V1.0.3 -- Changed library name in the library.properties file
 	V1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 	V1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
-	V1.0.8 -- Use default arguments for begin() member function and 
-						add example using multiple BMP280 devices with SPI comms in NORMAL mode		
+	V1.0.8 -- Used default arguments for begin() member function and 
+						added example using multiple BMP280 devices with SPI comms in NORMAL mode	
+	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -72,7 +73,7 @@ enum {
 enum Mode {
 	SLEEP_MODE          	 = 0x00,          // Device mode bitfield in the control and measurement register 
 	FORCED_MODE         	 = 0x01,
-	NORMAL_MODE         	 = 0x03,
+	NORMAL_MODE         	 = 0x03
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,11 +106,6 @@ enum TimeStandby {
 	TIME_STANDBY_1000MS    = 0x05,
 	TIME_STANDBY_2000MS    = 0x06,
 	TIME_STANDBY_4000MS    = 0x07
-};
-
-enum {
-	IM_UPDATE              = 0x01,					// Status register bit fields
-	MEASURING              = 0x08	
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -146,10 +142,9 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 	protected:
 	private:
 		void setMode(Mode mode);																		// Set the barometer mode
-		void setCtrlMeasRegister(Mode mode, Oversampling presOversampling, Oversampling tempOversamping);		// Set the BMP280 control and measurment register
+		void setCtrlMeasRegister(Mode mode, Oversampling presOversampling, Oversampling tempOversamping);		// Set the BMP280 control and measurement register
 		void setConfigRegister(IIRFilter iirFilter, TimeStandby timeStandby);		// Set the BMP280 configuration register
-		uint8_t checkMode();																				// Checks the barometer's mode before taking a measurement
-		uint8_t writeMask;																					// Sub address mask for SPI communications
+		uint8_t dataReady();																				// Checks if a measurement is ready
 	
 		struct {																										// The BMP280 compensation trim parameters (coefficients)
 			uint16_t dig_T1;
@@ -197,7 +192,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 		int32_t t_fine;																							// Bosch t_fine variable
 		int32_t bmp280_compensate_T_int32(int32_t adc_T);						// Bosch temperature compensation function
 		uint32_t bmp280_compensate_P_int64(int32_t adc_P);					// Bosch pressure compensation function
-	  bool _readoutPending;
+		bool previous_measuring;																		// Previous measuring state
 };
 
 #endif
