@@ -67,7 +67,11 @@ SPIClass SPI1(HSPI);			// Create the SPI1 HSPI object
 BMP280_DEV bmp(21, HSPI, SPI1);		// Set up HSPI port communications on the ESP32
 ```
 
-By default the I2C runs in fast mode at 400kHz and SPI at 1MHz.
+By default the I2C runs in fast mode at 400kHz and SPI at 1MHz. However it is possible to change either the I2C or SPI clock speed using the set clock function:
+
+```
+bmp388.setClock(4000000);			// Set the SPI clock to 4MHz
+```
 
 ---
 ### __Device Initialisation__
