@@ -143,7 +143,7 @@ void Device::readBytes(uint8_t subAddress, uint8_t* data, uint16_t count)
 		Wire.write(subAddress);                   
 		Wire.endTransmission(false);              
 		uint8_t i = 0;
-		Wire.requestFrom(address, count);  
+		Wire.requestFrom(address, (uint8_t)count);  
 		while (Wire.available()) 
 		{
 			data[i++] = Wire.read();          
