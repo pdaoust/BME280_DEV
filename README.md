@@ -16,6 +16,7 @@ This BMP280_DEV library offers the following features:
 
 ## __Version__
 
+- Version 1.0.9 -- Moved writeMask to Device class and improved measurement detection algorithm
 - Version 1.0.8 -- Use default arguments for begin() member function and 
 									 add example using multiple BMP280 devices with SPI comms in NORMAL mode
 - Version 1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
