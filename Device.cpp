@@ -6,6 +6,7 @@
 	V1.0.0 -- Initial release
 	V1.0.1 -- Added ESP32 HSPI support	
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
+	V1.0.3 -- Addition of SPI write and read byte masks
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -104,7 +105,7 @@ void Device::writeByte(uint8_t subAddress, uint8_t data)
 	{
 		spi->beginTransaction(SPISettings(spiClockSpeed, MSBFIRST, SPI_MODE0));	// Write a byte to the sub-address using SPI
 		digitalWrite(cs, LOW);
-		spi->transfer(subAddress);
+		spi->transfer(subAddress & WRITE_MASK);
 		spi->transfer(data);
 		digitalWrite(cs, HIGH);
 		spi->endTransaction();
@@ -126,7 +127,7 @@ uint8_t Device::readByte(uint8_t subAddress)												// Read a byte from the 
 	{
 		spi->beginTransaction(SPISettings(spiClockSpeed, MSBFIRST, SPI_MODE0));		// Read a byte from the sub-address using SPI
 		digitalWrite(cs, LOW);
-		spi->transfer(subAddress);
+		spi->transfer(subAddress | READ_MASK);
 		data = spi->transfer(data);
 		digitalWrite(cs, HIGH);
 		spi->endTransaction();	
@@ -134,9 +135,9 @@ uint8_t Device::readByte(uint8_t subAddress)												// Read a byte from the 
   return data;                             													// Return data read from sub-address register
 }
 
-void Device::readBytes(uint8_t subAddress, uint8_t* dest, uint8_t count)
+void Device::readBytes(uint8_t subAddress, uint8_t* data, uint16_t count)
 {  
-  if (comms == I2C_COMMS)																						// Read "count" bytes into the "dest" buffer using I2C
+  if (comms == I2C_COMMS)																						// Read "count" bytes into the "data" buffer using I2C
 	{
 		Wire.beginTransmission(address);          
 		Wire.write(subAddress);                   
@@ -145,15 +146,15 @@ void Device::readBytes(uint8_t subAddress, uint8_t* dest, uint8_t count)
 		Wire.requestFrom(address, count);  
 		while (Wire.available()) 
 		{
-			dest[i++] = Wire.read();          
+			data[i++] = Wire.read();          
 		}
 	}
 	else // if (comms == SPI_COMMS)		
 	{
-		spi->beginTransaction(SPISettings(spiClockSpeed, MSBFIRST, SPI_MODE0));	// Read "count" bytes into the "dest" buffer using SPI
+		spi->beginTransaction(SPISettings(spiClockSpeed, MSBFIRST, SPI_MODE0));	// Read "count" bytes into the "data" buffer using SPI
 		digitalWrite(cs, LOW);
-		spi->transfer(subAddress);
-		spi->transfer(dest, count);
+		spi->transfer(subAddress | READ_MASK);
+		spi->transfer(data, count);
 		digitalWrite(cs, HIGH);
 		spi->endTransaction();	
 	}
