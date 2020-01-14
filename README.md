@@ -14,6 +14,23 @@ This BMP280_DEV library offers the following features:
 - In NORMAL mode barometer returns results at the specified standby time interval
 - Highly configurable, allows for changes to pressure and temperature oversampling, IIR filter and standby time
 
+---
+## __Contents__
+
+1. [Version](#version)
+2. [Arduino Compatiblility](#arduino_compatibility)
+3. [Installation](#installation)
+3. [Usage](#usage)
+	1. [BMP388_DEV Library](#bmp388_dev_library)
+	2. [Device Initialisation](#device_intialisation)
+	3. [Device Configuration](#device_configuration)
+	4. [Modes Of Operation](#modes_of_operation)
+	5. [Results Acquisition](#results_acquisition)
+	6. [Code Implementation](#code_implementation)
+5. [Example Code](#example_code)
+
+---
+<a name="version"></a>
 ## __Version__
 
 - Version 1.0.9 -- Moved writeMask to Device class and improved measurement detection algorithm
@@ -26,18 +43,25 @@ This BMP280_DEV library offers the following features:
 - Version 1.0.1 -- Added ESP32 HSPI support and changed library name for Arduino compatibility
 - Version 1.0.0 -- Intial version
 
+---
+<a name="arduino_compatibility"></a>
 ## __Arduino Compatibility__
 
 - All Arduino boards, but for 5V Arduino boards (such as the Uno, Nano, Mega, Leonardo, etc...), please check if the BMP280 breakout board requires a 5V to +3.3V voltage level shifter
 
+---
+<a name="installation"></a>
 ## __Installation__
 
 The BMP280_DEV library can be installed using the Arduino IDE's Library Manager. To access the Library Manager, in the Arduino IDE's menu select _Sketch->Include Library->Manage Libraries..._. In the Library Manager's search bar type BMP280 then select the "Install" button in the BMP280_DEV entry.
 
 Alternatively simply download BMP280_DEV from this Github repository, un-zip or extract the files and place the BMP280_DEV directory in your _.../Arduino/libraries/..._ folder. The _.../Arduino/..._ folder is the one where your Arduino IDE sketches are usually located.
 
+---
+<a name="usage"></a>
 ## __Usage__
 
+<a name="bmp280_dev_library"></a>
 ### __BMP280_DEV Library__
 
 Simply include the BMP280_DEV.h file at the beginning of your sketch:
@@ -109,6 +133,7 @@ bmp280.begin(BMP280_I2C_ALT_ADDR);	// Initialise the BMP280 with the alternate I
 Note that the begin functions return the value 1 upon successful initialisation, otherwise it returns 0 for failure.
 
 ---
+<a name="device_configuration"></a>
 ### __Device Configuration__
 
 After initialisation it is possible to change the BMP280 configuration with the following functions:
@@ -129,6 +154,7 @@ bmp280.setIIRFilter(IIR_FILTER_16);	// Options are IIR_FILTER_OFF, _2, _4, _8, _
 bmp280.setTimeStandby(TIME_STANDBY_2000MS);	// Options are TIME_STANDBY_05MS, _62MS, _125MS, _250MS, _500MS, _1000MS, 2000MS, 4000MS
 ```
 ---
+<a name="modes_of_operation"></a>
 ### __Modes Of Operation__
 
 The BMP280 has 3 modes of operation: **SLEEP_MODE**, **NORMAL_MODE** and **FORCED_MODE**: 
@@ -157,6 +183,7 @@ To stop the conversion at anytime and return to **SLEEP_MODE**:
 bmp280.stopConversion();	// Stop conversion and return to SLEEP_MODE
 ```
 ---
+<a name="results_acquisition"></a>
 ### __Results Acquisition__
 
 The BMP280 barometer library acquires temperature in degrees celius (**°C**), pressure in hectoPascals/millibar (**hPa**) and altitude in metres (**m**). The acquisition functions scan the BMP280's status register and return 1 if the barometer results are ready and have been successfully read, 0 if they are not; this allows for non-blocking code implementation. The temperature, pressure and altitude results themselves are _float_ variables by passed reference to the function and are updated upon a successful read.
@@ -183,6 +210,7 @@ bmp280.getPressure(pressure);	// Acquire the pressure only, (also calculates tem
 bmp280.getAltitude(altitude);	// Acquire the altitude only
 ```
 ---
+<a name="code_implementation"></a>
 ### __Code Implementation__
 
 Here is an example sketch of how to use the BMP280 library for non-blocking I2C operation, default configuration with continuous conversion in NORMAL_MODE, but with a standby sampling time of 1 second:
@@ -259,6 +287,7 @@ BMP280_DEV bmp280(10);	// Instantiate (create) a BMP280_DEV object and set-up fo
 For more details see code examples provided in the _.../examples/..._ directory.
 
 ---
+<a name="example_code"></a>
 ## __Example Code__
 
 - __BMP280_I2C_Normal.ino__ : I2C Interface, Normal Mode, Standard I2C Address (0x77)
