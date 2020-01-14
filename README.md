@@ -29,7 +29,6 @@ This BMP280_DEV library offers the following features:
 	6. [Code Implementation](#code_implementation)
 5. [Example Code](#example_code)
 
----
 <a name="version"></a>
 ## __Version__
 
@@ -43,13 +42,11 @@ This BMP280_DEV library offers the following features:
 - Version 1.0.1 -- Added ESP32 HSPI support and changed library name for Arduino compatibility
 - Version 1.0.0 -- Intial version
 
----
 <a name="arduino_compatibility"></a>
 ## __Arduino Compatibility__
 
 - All Arduino boards, but for 5V Arduino boards (such as the Uno, Nano, Mega, Leonardo, etc...), please check if the BMP280 breakout board requires a 5V to +3.3V voltage level shifter
 
----
 <a name="installation"></a>
 ## __Installation__
 
@@ -57,7 +54,6 @@ The BMP280_DEV library can be installed using the Arduino IDE's Library Manager.
 
 Alternatively simply download BMP280_DEV from this Github repository, un-zip or extract the files and place the BMP280_DEV directory in your _.../Arduino/libraries/..._ folder. The _.../Arduino/..._ folder is the one where your Arduino IDE sketches are usually located.
 
----
 <a name="usage"></a>
 ## __Usage__
 
