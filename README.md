@@ -62,7 +62,7 @@ BMP280_dev bmp280(10);	// Set up SPI communications on digital pin D10
 The library also supports the ESP32 HSPI operation on pins: SCK 14, MOSI 13, MISO 27 and user defined SS (CS):
 
 ```
-SPIClass SPI1(HSPI);							// Create the SPI1 HSPI object
+SPIClass SPI1(HSPI);	// Create the SPI1 HSPI object
 BMP280_DEV bmp(21, HSPI, SPI1);		// Set up HSPI port communications on the ESP32
 ```
 
