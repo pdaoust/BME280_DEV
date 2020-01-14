@@ -6,6 +6,7 @@
 	V1.0.0 -- Initial release 
 	V1.0.1 -- Added ESP32 HSPI support	
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
+	V1.0.3 -- Addition of SPI write and read byte masks
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,16 +56,17 @@ class Device{
 		void setI2CAddress(uint8_t addr);											  		// Set the Device I2C address
 		void writeByte(uint8_t subAddress, uint8_t data);						// I2C and SPI write byte wrapper function
 		uint8_t readByte(uint8_t subAddress);												// I2C and SPI read byte wrapper function
-		void readBytes(uint8_t subAddress, uint8_t* dest, uint8_t count);		// I2C and SPI read bytes wrapper function
+		void readBytes(uint8_t subAddress, uint8_t* dest, uint16_t count);		// I2C and SPI read bytes wrapper function
 	private:
 		Comms comms;																								// Communications bus: I2C or SPI
 		uint8_t address;																						// The device I2C address
 		uint8_t cs;																									// The SPI chip select pin	
 		uint32_t spiClockSpeed;																			// The SPI clock speed
 		SPIClass* spi;																							// Pointer to the SPI class
+		const uint8_t WRITE_MASK = 0x7F;														// Sub-address write mask for SPI communications
+		const uint8_t READ_MASK  = 0x80;														// Sub-address read mask for SPI communications
 #ifdef ARDUINO_ARCH_ESP32
 		uint8_t spiPort;																						// SPI port type VSPI or HSPI
 #endif
 };
-
 #endif
