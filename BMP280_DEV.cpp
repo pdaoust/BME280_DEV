@@ -1,16 +1,17 @@
 /*
-  BMP280 is an I2C/SPI compatible library for the Bosch BMP280 barometer.
+  BMP280_DEV is an I2C/SPI compatible library for the Bosch BMP280 barometer.
 	
 	Copyright (C) Martin Lindupp 2019
 	
 	V1.0.0 -- Initial release 	
 	V1.0.1 -- Added ESP32 HSPI support and change library to unique name
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
-	V1.0.3 -- Change library name in the library.properties file
+	V1.0.3 -- Changed library name in the library.properties file
 	V1.0.5 -- Fixed bug in BMP280_DEV::getTemperature() function, thanks to Jon M.
 	V1.0.6 -- Merged multiple instances and initialisation pull requests by sensslen
-	V1.0.8 -- Use default arguments for begin() member function and 
-						add example using multiple BMP280 devices with SPI comms in NORMAL mode
+	V1.0.8 -- Used default arguments for begin() member function and 
+						added example using multiple BMP280 devices with SPI comms in NORMAL mode
+	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,10 +37,10 @@
 // BMP280_DEV Class Constructors
 ////////////////////////////////////////////////////////////////////////////////
 
-BMP280_DEV::BMP280_DEV() : writeMask(0xFF) { setI2CAddress(BMP280_I2C_ADDR); }	// Constructor for I2C communications																							// Constructor for I2C communications
-BMP280_DEV::BMP280_DEV(uint8_t cs) : Device(cs), writeMask(0x7F) {}			   			// Constructor for SPI communications
-#ifdef ARDUINO_ARCH_ESP32 																											// Constructors for SPI communications on the ESP32
-BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device(cs, spiPort, spiClass), writeMask(0x7F) {}
+BMP280_DEV::BMP280_DEV() { setI2CAddress(BMP280_I2C_ADDR); }		// Constructor for I2C communications		
+BMP280_DEV::BMP280_DEV(uint8_t cs) : Device(cs) {}			   			// Constructor for SPI communications
+#ifdef ARDUINO_ARCH_ESP32 																			// Constructors for SPI communications on the ESP32
+BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device(cs, spiPort, spiClass) {}
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // BMP280_DEV Public Member Functions
@@ -77,7 +78,7 @@ uint8_t BMP280_DEV::begin(uint8_t addr)															// Initialise BMP280 with 
 
 void BMP280_DEV::reset()																						// Reset the BMP280 barometer
 {
-	writeByte(BMP280_RESET & writeMask, RESET_CODE);                     									
+	writeByte(BMP280_RESET, RESET_CODE);                     									
   delay(10);                                                                
 }
 
@@ -85,6 +86,7 @@ void BMP280_DEV::startNormalConversion() { setMode(NORMAL_MODE); }	// Start cont
 
 void BMP280_DEV::startForcedConversion() 														// Start a one shot measurement in FORCED_MODE
 { 
+	ctrl_meas.reg = readByte(BMP280_CTRL_MEAS);											 	// Read the control and measurement register
 	if (ctrl_meas.bit.mode == SLEEP_MODE)															// Only set FORCED_MODE if we're already in SLEEP_MODE
 	{
 		setMode(FORCED_MODE);
@@ -96,30 +98,30 @@ void BMP280_DEV::stopConversion() { setMode(SLEEP_MODE); }					// Stop the conve
 void BMP280_DEV::setPresOversampling(Oversampling presOversampling)	// Set the pressure oversampling rate
 {
 	ctrl_meas.bit.osrs_p = presOversampling;
-	writeByte(BMP280_CTRL_MEAS & writeMask, ctrl_meas.reg);
+	writeByte(BMP280_CTRL_MEAS, ctrl_meas.reg);
 }
 
 void BMP280_DEV::setTempOversampling(Oversampling tempOversampling)	// Set the temperature oversampling rate
 {
 	ctrl_meas.bit.osrs_t = tempOversampling;
-	writeByte(BMP280_CTRL_MEAS & writeMask, ctrl_meas.reg);
+	writeByte(BMP280_CTRL_MEAS, ctrl_meas.reg);
 }
 
 void BMP280_DEV::setIIRFilter(IIRFilter iirFilter)									// Set the IIR filter setting
 {
 	config.bit.filter = iirFilter;
-	writeByte(BMP280_CONFIG & writeMask, config.reg);
+	writeByte(BMP280_CONFIG, config.reg);
 }
 
 void BMP280_DEV::setTimeStandby(TimeStandby timeStandby)						// Set the time standby measurement interval
 {
 	config.bit.t_sb = timeStandby;
-	writeByte(BMP280_CONFIG & writeMask, config.reg);
+	writeByte(BMP280_CONFIG, config.reg);
 }
 
 uint8_t BMP280_DEV::getTemperature(float &temperature)							// Get the temperature
 {
-	if (!checkMode())																									// Check if a measurement is ready
+	if (!dataReady())																									// Check if a measurement is ready
 	{
 		return 0;
 	}
@@ -139,7 +141,7 @@ uint8_t BMP280_DEV::getPressure(float &pressure)										// Get the pressure
 
 uint8_t BMP280_DEV::getTempPres(float &temperature, float &pressure)	// Get the temperature and pressure
 {
-	if (!checkMode())																									// Check if a measurement is ready
+	if (!dataReady())																									// Check if a measurement is ready
 	{
 		return 0;
 	}
@@ -178,49 +180,43 @@ uint8_t BMP280_DEV::getMeasurements(float &temperature, float &pressure, float &
 void BMP280_DEV::setMode(Mode mode)																	// Set the BMP280's mode
 {
 	ctrl_meas.bit.mode = mode;
-	writeByte(BMP280_CTRL_MEAS & writeMask, ctrl_meas.reg);
+	writeByte(BMP280_CTRL_MEAS, ctrl_meas.reg);
 }
 
 // Set the BMP280 control and measurement register 
 void BMP280_DEV::setCtrlMeasRegister(Mode mode, Oversampling presOversampling, Oversampling tempOversampling)
 {
-	ctrl_meas.reg = (uint8_t)tempOversampling << 5 | (uint8_t)presOversampling << 2 | (uint8_t)mode;
-	writeByte(BMP280_CTRL_MEAS & writeMask, ctrl_meas.reg);                              
+	ctrl_meas.reg = tempOversampling << 5 | presOversampling << 2 | mode;
+	writeByte(BMP280_CTRL_MEAS, ctrl_meas.reg);                              
 }
 
 // Set the BMP280 configuration register
 void BMP280_DEV::setConfigRegister(IIRFilter iirFilter, TimeStandby timeStandby)
 {
-	config.reg = (uint8_t)timeStandby << 5 | (uint8_t)iirFilter << 2;
-	writeByte(BMP280_CONFIG & writeMask, config.reg);                              
+	config.reg = timeStandby << 5 | iirFilter << 2;
+	writeByte(BMP280_CONFIG, config.reg);                              
 }
 
-uint8_t BMP280_DEV::checkMode()																			// Check the device mode
-{
-	if (ctrl_meas.bit.mode == SLEEP_MODE)															// If in SLEEP_MODE return immediately
-	{		
-		_readoutPending = false;
+uint8_t BMP280_DEV::dataReady()																			// Check if a measurement is ready
+{			
+	if (ctrl_meas.bit.mode == SLEEP_MODE)														 	// If we're in SLEEP_MODE return immediately
+	{
 		return 0;
 	}
-	else 																															// Otherwise we're in NORMAL or FORCED mode
+	status.reg = readByte(BMP280_STATUS);															// Read the status register				
+	if (status.bit.measuring ^ previous_measuring)						 				// Edge detection: check if the measurement bit has been changed
 	{
-		status.reg = readByte(BMP280_STATUS);														// Check the STATUS register
-		if (status.bit.measuring && !_readoutPending)														// If a measurement is taking place return immediately
-		{							
-			_readoutPending = true;
-			return 0;																										
-		}
-		else if (!status.bit.measuring && _readoutPending)
-		{					
-			if (ctrl_meas.bit.mode == FORCED_MODE)												// A measurement is ready, if we're in FORCED_MODE switch back to SLEEP_MODE
-			{		
-				ctrl_meas.bit.mode = SLEEP_MODE;	
+		previous_measuring = status.bit.measuring;											// Update the previous measuring flag
+		if (!status.bit.measuring)																			// Check if the measuring bit has been cleared
+		{
+			if (ctrl_meas.bit.mode == FORCED_MODE)												// If we're in FORCED_MODE switch back to SLEEP_MODE
+			{
+				ctrl_meas.bit.mode = SLEEP_MODE;												
 			}
-			_readoutPending = false;
-			return 1;
-		}		
+			return 1;																											// A measurement is ready
+		}
 	}
-	return 0;
+	return 0;																													// A measurement is still pending
 }
 
 ////////////////////////////////////////////////////////////////////////////////
