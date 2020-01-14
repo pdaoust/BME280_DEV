@@ -31,7 +31,9 @@ This BMP280_DEV library offers the following features:
 
 ## __Installation__
 
-After download simply un-zip the file and place the BMP280 directory in your _.../Arduino/libraries/..._ folder. The _.../Arduino/..._ folder is the one where your Arduino IDE sketches are usually located.
+The BMP280_DEV library can be installed using the Arduino IDE's Library Manager. To access the Library Manager, in the Arduino IDE's menu select _Sketch->Include Library->Manage Libraries..._. In the Library Manager's search bar type BMP280 then select the "Install" button in the BMP280_DEV entry.
+
+Alternatively simply download BMP280_DEV from this Github repository, un-zip or extract the files and place the BMP280_DEV directory in your _.../Arduino/libraries/..._ folder. The _.../Arduino/..._ folder is the one where your Arduino IDE sketches are usually located.
 
 ## __Usage__
 
@@ -254,17 +256,16 @@ For more details see code examples provided in the _.../examples/..._ directory.
 ---
 ## __Example Code__
 
-I2C Normal Mode: sampling at 2 seconds standby time intervals with default settings
+- __BMP280_I2C_Normal.ino__ : I2C Interface, Normal Mode, Standard I2C Address (0x77)
 
-I2C Normal Mode (Alterntive I2C Address): sampling at 2 second standby time intervals with default settings
+- __BMP280_I2C_Alt_Normal.ino__ : 2C Interface, Normal Mode, Alternative I2C Address (0x76)
 
-I2C Forced Mode: with default settings
+- __BMP280_I2C_Forced.ino__ : I2C Interface, Forced Mode, Standard I2C Address (0x77)
 
-SPI Normal Mode: sampling at 2 second standby time intervals with default settings
+- __BMP280_SPI_Normal.ino__ : SPI Interface, Normal Mode
 
-SPI Forced Mode: with default settings
+- __BMP280_SPI_Forced.ino__ : SPI Interface, Forced Mode
 
-ESP32 HSPI Normal Mode: sampling at 1 second standby time intervals with default settings
+- __BMP280_ESP32_HSPI_Normal.ino__ : ESP32 HSPI Interface, Normal Mode
 
-SPI Normal Mode Multiple: sampling multiple BMP280 devices at 2 second standby time intervals with default settings
-
+- __BMP280_SPI_Normal_Multiple.ino__ : SPI Interface, Normal Mode, Multiple BMP280 Devices
