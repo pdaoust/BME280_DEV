@@ -12,6 +12,7 @@
 	V1.0.8 -- Used default arguments for begin() member function and 
 						added example using multiple BMP280 devices with SPI comms in NORMAL mode
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
+	V1.0.10 -- Modification to allow user-define pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,10 +39,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 BMP280_DEV::BMP280_DEV() { setI2CAddress(BMP280_I2C_ADDR); }		// Constructor for I2C communications		
+#ifdef ARDUINO_ARCH_ESP8266
+BMP280_DEV::BMP280_DEV(uint8_t sda, uint8_t scl) : Device (sda, scl) { setI2CAddress(BMP280_I2C_ADDR); } 	// Constructor for I2C comms on ESP8266
+#endif
 BMP280_DEV::BMP280_DEV(uint8_t cs) : Device(cs) {}			   			// Constructor for SPI communications
 #ifdef ARDUINO_ARCH_ESP32 																			// Constructors for SPI communications on the ESP32
 BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device(cs, spiPort, spiClass) {}
 #endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // BMP280_DEV Public Member Functions
 ////////////////////////////////////////////////////////////////////////////////
