@@ -7,6 +7,7 @@
 	V1.0.1 -- Added ESP32 HSPI support	
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
 	V1.0.3 -- Addition of SPI write and read byte masks
+	V1.0.4 -- Modification to allow user-define pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,6 +34,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 Device::Device() : comms(I2C_COMMS) {}															// Initialise constructor for I2C communications
+#ifdef ARDUINO_ARCH_ESP8266
+Device::Device(uint8_t sda, uint8_t scl) : comms(I2C_COMMS_DEFINED_PINS), sda(sda), scl(scl) {}	// Constructor for ESP8266 I2C with user-defined pins
+#endif
 Device::Device(uint8_t cs) : comms(SPI_COMMS), cs(cs), spiClockSpeed(1000000) {}		// Constructor for SPI communications
 #ifdef ARDUINO_ARCH_ESP32																														// Constructor for ESP32 HSPI communications
 Device::Device(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) 
@@ -49,6 +53,12 @@ void Device::setClock(uint32_t clockSpeed)													// Set the I2C or SPI clo
 	{
 		Wire.setClock(clockSpeed);
 	}
+#ifdef ARDUINO_ARCH_ESP8266
+	else if (comms == I2C_COMMS_DEFINED_PINS)
+	{
+		Wire.setClock(clockSpeed);
+	}
+#endif
 	else
 	{
 		spiClockSpeed = clockSpeed;
@@ -66,6 +76,13 @@ void Device::initialise()																						// Initialise device communicatio
 		Wire.begin();																										// Initialise I2C communication
 		Wire.setClock(400000);																					// Set the SCL clock to default of 400kHz
 	}
+#ifdef ARDUINO_ARCH_ESP8266
+	else if (comms == I2C_COMMS_DEFINED_PINS)													// Check if the ESP8266 has specified user-defined I2C pins
+	{
+		Wire.begin(sda, scl);																						// Initialise I2C communication with user-defined pins
+		Wire.setClock(400000);																					// Set the SCL clock to default of 400kHz
+	}
+#endif
 	else
 	{
 		digitalWrite(cs, HIGH);																					// Pull the chip select (CS) pin high
