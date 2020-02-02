@@ -12,6 +12,7 @@
 	V1.0.8 -- Used default arguments for begin() member function and 
 						added example using multiple BMP280 devices with SPI comms in NORMAL mode	
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
+	V1.0.10 -- Modification to allow user-define pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -115,6 +116,9 @@ enum TimeStandby {
 class BMP280_DEV : public Device {															// Derive the BMP280_DEV class from the Device class
 	public:
 		BMP280_DEV();																								// BMP280_DEV object for I2C operation
+#ifdef ARDUINO_ARCH_ESP8266
+		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP8266 I2C operation with user-defined pins
+#endif
 		BMP280_DEV(uint8_t cs);																			// BMP280_DEV object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
 		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
