@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.10 -- Modification to allow user-define pins for I2C operation on the ESP8266
 - Version 1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 - Version 1.0.8 -- Use default arguments for begin() member function and 
 									 add example using multiple BMP280 devices with SPI comms in NORMAL mode
@@ -299,3 +300,5 @@ For more details see code examples provided in the _.../examples/..._ directory.
 - __BMP280_ESP32_HSPI_Normal.ino__ : ESP32 HSPI Interface, Normal Mode
 
 - __BMP280_SPI_Normal_Multiple.ino__ : SPI Interface, Normal Mode, Multiple BMP280 Devices
+
+- __BMP280_ESP8266_I2C_Normal_DefinedPins.ino__ : ESP8266 I2C Interface, Normal Mode, User-Defined Pins
