@@ -12,7 +12,7 @@
 	V1.0.8 -- Used default arguments for begin() member function and 
 						added example using multiple BMP280 devices with SPI comms in NORMAL mode	
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
-	V1.0.10 -- Modification to allow user-define pins for I2C operation on the ESP8266
+	V1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
