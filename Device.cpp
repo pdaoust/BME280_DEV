@@ -7,7 +7,7 @@
 	V1.0.1 -- Added ESP32 HSPI support	
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
 	V1.0.3 -- Addition of SPI write and read byte masks
-	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
+	V1.0.4 -- Modification to allow user-define pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,12 +53,6 @@ void Device::setClock(uint32_t clockSpeed)													// Set the I2C or SPI clo
 	{
 		Wire.setClock(clockSpeed);
 	}
-#ifdef ARDUINO_ARCH_ESP8266
-	else if (comms == I2C_COMMS_DEFINED_PINS)
-	{
-		Wire.setClock(clockSpeed);
-	}
-#endif
 	else
 	{
 		spiClockSpeed = clockSpeed;
@@ -81,6 +75,7 @@ void Device::initialise()																						// Initialise device communicatio
 	{
 		Wire.begin(sda, scl);																						// Initialise I2C communication with user-defined pins
 		Wire.setClock(400000);																					// Set the SCL clock to default of 400kHz
+		comms = I2C_COMMS;																							// Set the communications to standard I2C
 	}
 #endif
 	else
