@@ -7,7 +7,7 @@
 	V1.0.1 -- Added ESP32 HSPI support	
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
 	V1.0.3 -- Addition of SPI write and read byte masks
-	V1.0.4 -- Modification to allow user-define pins for I2C operation on the ESP8266
+	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
