@@ -38,12 +38,11 @@
 // Device Communications
 ////////////////////////////////////////////////////////////////////////////////
 
-enum Comms { I2C_COMMS, 
-						 SPI_COMMS,
-#ifdef ARDUINO_ARCH_ESP8266						 
-						 I2C_COMMS_DEFINED_PINS 
+#ifdef ARDUINO_ARCH_ESP8266
+enum Comms { I2C_COMMS, SPI_COMMS, I2C_COMMS_DEFINED_PINS };
+#else						 
+enum Comms { I2C_COMMS, SPI_COMMS };		 
 #endif
-};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Device Class definition
