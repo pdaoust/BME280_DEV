@@ -13,6 +13,7 @@
 						added example using multiple BMP280 devices with SPI comms in NORMAL mode
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	V1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
+	V1.0.11 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -124,6 +125,11 @@ void BMP280_DEV::setTimeStandby(TimeStandby timeStandby)						// Set the time st
 	writeByte(BMP280_CONFIG, config.reg);
 }
 
+void BMP280_DEV::setSeaLevelPressure(float pressure)								// Set the sea level pressure value
+{
+	sea_level_pressure = pressure;
+}
+
 uint8_t BMP280_DEV::getTemperature(float &temperature)							// Get the temperature
 {
 	if (!dataReady())																									// Check if a measurement is ready
@@ -169,10 +175,9 @@ uint8_t BMP280_DEV::getAltitude(float &altitude)										// Get the altitude
 
 uint8_t BMP280_DEV::getMeasurements(float &temperature, float &pressure, float &altitude)		// Get all measurements temperature, pressue and altitude
 {  
-	const float SEA_LEVEL_PRESSURE = 1013.23f;
 	if (getTempPres(temperature, pressure))
 	{
-		altitude = ((float)powf(SEA_LEVEL_PRESSURE / pressure, 0.190223f) - 1.0f) * (temperature + 273.15f) / 0.0065f; // Calculate the altitude in metres 
+		altitude = ((float)powf(sea_level_pressure / pressure, 0.190223f) - 1.0f) * (temperature + 273.15f) / 0.0065f; // Calculate the altitude in metres 
 		return 1;
 	}
 	return 0;
