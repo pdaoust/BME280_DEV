@@ -13,6 +13,7 @@
 						added example using multiple BMP280 devices with SPI comms in NORMAL mode	
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	V1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
+	V1.0.11 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -138,6 +139,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 		void setTempOversampling(Oversampling tempOversampling);		// Set the temperature oversampling: OFF, X1, X2, X4, X8, X16
 		void setIIRFilter(IIRFilter iirFilter);											// Set the IIR filter setting: OFF, 2, 4, 8, 16
 		void setTimeStandby(TimeStandby timeStandby);	 							// Set the time standby measurement interval: 0.5, 62, 125, 250, 500ms, 1s, 2s, 4s
+		void setSeaLevelPressure(float pressure = 1013.23f);				// Set the sea level pressure value
 		uint8_t getTemperature(float &temperature);									// Get a temperature measurement
 		uint8_t getPressure(float &pressure);												// Get a pressure measurement
 		uint8_t getTempPres(float &temperature, float &pressure);		// Get a temperature and pressure measurement
@@ -197,6 +199,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 		int32_t bmp280_compensate_T_int32(int32_t adc_T);						// Bosch temperature compensation function
 		uint32_t bmp280_compensate_P_int64(int32_t adc_P);					// Bosch pressure compensation function
 		bool previous_measuring;																		// Previous measuring state
+		float sea_level_pressure = 1013.23f;												// Sea level pressure
 };
 
 #endif
