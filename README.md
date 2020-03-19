@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and flagging up this issue
 - Version 1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 - Version 1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 - Version 1.0.9 -- Moved writeMask to Device class and improved measurement detection code
