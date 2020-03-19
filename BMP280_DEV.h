@@ -14,6 +14,7 @@
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	V1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
+	V1.0.14 -- Fix uninitialised structures, thanks to David Jade flagging up this issue
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -175,7 +176,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 				uint8_t t_sb		 : 3;
 			} bit;
 			uint8_t reg;
-		} config;
+		} config = { .reg = 0 };
 		
 		union {																											// Copy of the BMP280's control and measurement register
 			struct {
@@ -184,7 +185,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 				uint8_t osrs_t : 3;
 			} bit;
 			uint8_t reg;
-		} ctrl_meas;
+		} ctrl_meas = { .reg = 0 };
 			
 		union {																											// Copy of the BMP280's status register
 			struct {
@@ -193,7 +194,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 				uint8_t measuring : 1;
 			} bit;
 			uint8_t reg;
-		} status;
+		} status = { .reg = 0 }
 		
 		int32_t t_fine;																							// Bosch t_fine variable
 		int32_t bmp280_compensate_T_int32(int32_t adc_T);						// Bosch temperature compensation function
