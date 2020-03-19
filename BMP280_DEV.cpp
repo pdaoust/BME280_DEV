@@ -14,7 +14,8 @@
 	V1.0.9 -- Moved writeMask to Device class and improved measurement detection code
 	V1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
-	V1.0.14 -- Fix uninitialised structures, thanks to David Jade flagging up this issue
+	V1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and 
+						 flagging up this issue
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
