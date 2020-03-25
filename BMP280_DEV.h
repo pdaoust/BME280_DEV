@@ -195,7 +195,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 				uint8_t measuring : 1;
 			} bit;
 			uint8_t reg;
-		} status = { .reg = 0 }
+		} status = { .reg = 0 };
 		
 		int32_t t_fine;																							// Bosch t_fine variable
 		int32_t bmp280_compensate_T_int32(int32_t adc_T);						// Bosch temperature compensation function
