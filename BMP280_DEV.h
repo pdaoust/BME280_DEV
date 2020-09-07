@@ -16,6 +16,7 @@
 	V1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 	V1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and 
 						 flagging up this issue
+	V1.0.15 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -124,6 +125,7 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 #endif
 		BMP280_DEV(uint8_t cs);																			// BMP280_DEV object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
+		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP32 I2C operation with user-defined pins
 		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
 #endif
 		uint8_t begin(Mode mode = SLEEP_MODE, 												// Initialise the barometer with arguments
