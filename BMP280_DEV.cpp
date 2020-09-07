@@ -16,6 +16,7 @@
 	V1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 	V1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and 
 						 flagging up this issue
+	V1.0.15 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,8 +47,9 @@ BMP280_DEV::BMP280_DEV() { setI2CAddress(BMP280_I2C_ADDR); }		// Constructor for
 BMP280_DEV::BMP280_DEV(uint8_t sda, uint8_t scl) : Device(sda, scl) { setI2CAddress(BMP280_I2C_ADDR); } 	// Constructor for I2C comms on ESP8266
 #endif
 BMP280_DEV::BMP280_DEV(uint8_t cs) : Device(cs) {}			   			// Constructor for SPI communications
-#ifdef ARDUINO_ARCH_ESP32 																			// Constructors for SPI communications on the ESP32
-BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device(cs, spiPort, spiClass) {}
+#ifdef ARDUINO_ARCH_ESP32 																			
+BMP280_DEV::BMP280_DEV(uint8_t sda, uint8_t scl) : Device(sda, scl) { setI2CAddress(BMP280_I2C_ADDR); } 	// Constructor for I2C comms on ESP32
+BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device(cs, spiPort, spiClass) {} // Constructor for SPI communications on the ESP32
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
