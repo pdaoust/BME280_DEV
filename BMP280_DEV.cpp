@@ -16,7 +16,7 @@
 	V1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 	V1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and 
 						 flagging up this issue
-	V1.0.15 -- Modification to allow user-defined pins for I2C operation on the ESP32
+	V1.0.16 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
