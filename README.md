@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.16 -- Modification to allow user-defined pins for I2C operation on the ESP32
 - Version 1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and flagging up this issue
 - Version 1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
 - Version 1.0.10 -- Modification to allow user-defined pins for I2C operation on the ESP8266
@@ -69,13 +70,21 @@ Simply include the BMP280_DEV.h file at the beginning of your sketch:
 #include <BMP280_DEV.h>
 ```
 
-For I2C communication the BMP280_DEV object is created (instantiated) without parameters:
+For I2C communication the BMP280_DEV object is normally created (instantiated) without parameters:
 
 ```
 BMP280_DEV bmp280;	// Set up I2C communications
 ```
 
 By default the library uses the BMP280's I2C address 0x77. (To use the alternate I2C address: 0x76, see the begin() function below.
+
+The ESP8266 and ESP32 also offer the option of selecting the I2C SDA and SDA pins as parameters:
+
+```
+BMP280_DEV bmp280(A6, A7);	// Set up I2C communications on ESP32 pins A6 (SDA) and A7 (SCL): bmp280(SDA, SCL);
+```
+
+If no parameters are used the ESP32 uses its default SDA and SCL pins.
 
 For SPI communication the chip select (CS) Arduino digital output pin is specified as an argument, for example digital pin 10:
 
@@ -304,3 +313,5 @@ For more details see code examples provided in the _.../examples/..._ directory.
 - __BMP280_SPI_Normal_Multiple.ino__ : SPI Interface, Normal Mode, Multiple BMP280 Devices
 
 - __BMP280_ESP8266_I2C_Normal_DefinedPins.ino__ : ESP8266 I2C Interface, Normal Mode, User-Defined Pins
+
+- __BMP280_ESP32_I2C_Normal_DefinedPins.ino__ : ESP32 I2C Interface, Normal Mode, User-Defined Pins
