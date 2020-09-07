@@ -8,6 +8,7 @@
 	V1.0.2 -- Modification to allow external creation of HSPI object on ESP32
 	V1.0.3 -- Addition of SPI write and read byte masks
 	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
+	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +39,7 @@
 // Device Communications
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifdef ARDUINO_ARCH_ESP8266
+#if defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_ESP32
 enum Comms { I2C_COMMS, SPI_COMMS, I2C_COMMS_DEFINED_PINS };
 #else						 
 enum Comms { I2C_COMMS, SPI_COMMS };		 
@@ -56,6 +57,7 @@ class Device{
 #endif
 		Device(uint8_t cs);																					// Device object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
+		Device(uint8_t sda, uint8_t scl);														// Device object for ESP32 I2C operation with user-defined pins
 		Device(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);		// Device object for ESP32 HSPI operation with supplied SPI object
 #endif		
 		void setClock(uint32_t clockSpeed);													// Set the I2C/SPI clock speed
@@ -76,7 +78,7 @@ class Device{
 #ifdef ARDUINO_ARCH_ESP32
 		uint8_t spiPort;																						// SPI port type VSPI or HSPI
 #endif
-#ifdef ARDUINO_ARCH_ESP8266
+#if defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_ESP32
 		uint8_t sda, scl;																						// Software I2C SDA and SCL pins 
 #endif
 };
