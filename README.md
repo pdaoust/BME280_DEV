@@ -84,7 +84,7 @@ The ESP8266 and ESP32 also offer the option of selecting the I2C SDA and SDA pin
 BMP280_DEV bmp280(A6, A7);	// Set up I2C communications on ESP32 pins A6 (SDA) and A7 (SCL): bmp280(SDA, SCL);
 ```
 
-If no parameters are used the ESP32 uses its default SDA and SCL pins.
+If no parameters are selected, the ESP32 uses its default SDA and SCL pins.
 
 For SPI communication the chip select (CS) Arduino digital output pin is specified as an argument, for example digital pin 10:
 
