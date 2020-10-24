@@ -7,7 +7,7 @@ An Arduino compatible, non-blocking, I2C/SPI library for the Bosch BMP280 barome
 
 This BMP280_DEV library offers the following features:
 
-- Returns temperature in degrees celius (**°C**), pressure in hectoPascals/millibar (**hPa**) and altitude in metres (**m**)
+- Returns temperature in degrees celsius (**°C**), pressure in hectoPascals/millibar (**hPa**) and altitude in metres (**m**)
 - NORMAL or FORCED modes of operation
 - I2C or hardware SPI communications with configurable clock rates
 - Non-blocking operation 
@@ -32,6 +32,9 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.17 -- Added getCurrentTemperature(), getCurrentPressure(), getCurrentTempPres() 
+						 				getCurrentAltitude() and getCurrentMeasurements() functions,
+						 				to allow the BMP280 to be read directly without checking status register
 - Version 1.0.16 -- Modification to allow user-defined pins for I2C operation on the ESP32
 - Version 1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and flagging up this issue
 - Version 1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
@@ -194,7 +197,7 @@ bmp280.stopConversion();	// Stop conversion and return to SLEEP_MODE
 <a name="results_acquisition"></a>
 ### __Results Acquisition__
 
-The BMP280 barometer library acquires temperature in degrees celius (**°C**), pressure in hectoPascals/millibar (**hPa**) and altitude in metres (**m**). The acquisition functions scan the BMP280's status register and return 1 if the barometer results are ready and have been successfully read, 0 if they are not; this allows for non-blocking code implementation. The temperature, pressure and altitude results themselves are _float_ variables by passed reference to the function and are updated upon a successful read.
+The BMP280 barometer library acquires temperature in degrees celsius (**°C**), pressure in hectoPascals/millibar (**hPa**) and altitude in metres (**m**). The acquisition functions scan the BMP280's status register and return 1 if the barometer results are ready and have been successfully read, 0 if they are not; this allows for non-blocking code implementation. The temperature, pressure and altitude results themselves are _float_ variables by passed reference to the function and are updated upon a successful read. 
 
 Here are the results acquisition functions:
 
@@ -216,6 +219,28 @@ bmp280.getPressure(pressure);	// Acquire the pressure only, (also calculates tem
 
 ```
 bmp280.getAltitude(altitude);	// Acquire the altitude only
+```
+
+However, these function only operate correctly and efficiently, but only if your Arduino sketch's loop() time is fast (<35ms). If your loop() time is slow then these functions are unable to poll the BMP280's status register quickly enough. In this case, it is possible to simply read the barometer's latest results without checking the status register with the following functions:
+
+```
+bmp280.getCurrentMeasurements(temperature, pressure, altitude);	// Acquire the current temperature, pressue and altitude measurements
+```
+
+```
+bmp280.getCurrentTempPres(temperature, pressure);	// Acquire both the current temperature and pressure
+```
+
+```
+bmp280.getCurrentTemperature(temperature);	// Acquire the current temperature only
+```
+
+```
+bmp280.getCurrentPressure(pressure);	// Acquire the currentpressure only, (also calculates temperature, but doesn't return it)
+```
+
+```
+bmp280.getCurrentAltitude(altitude);	// Acquire the current altitude only
 ```
 ---
 <a name="code_implementation"></a>
