@@ -34,7 +34,7 @@ This BMP280_DEV library offers the following features:
 
 - Version 1.0.17 -- Added getCurrentTemperature(), getCurrentPressure(), getCurrentTempPres() 
 						 				getCurrentAltitude() and getCurrentMeasurements() functions,
-						 				to allow the BMP280 to be read directly without checking status register
+						 				to allow the BMP280 to be read directly without checking the status register
 - Version 1.0.16 -- Modification to allow user-defined pins for I2C operation on the ESP32
 - Version 1.0.14 -- Fix uninitialised structures, thanks to David Jade investigating and flagging up this issue
 - Version 1.0.12 -- Allow sea level pressure calibration using setSeaLevelPressure() function
