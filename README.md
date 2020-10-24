@@ -221,7 +221,7 @@ bmp280.getPressure(pressure);	// Acquire the pressure only, (also calculates tem
 bmp280.getAltitude(altitude);	// Acquire the altitude only
 ```
 
-However, these function only operate correctly and efficiently, but only if your Arduino sketch's loop() time is fast (<35ms). If your loop() time is slow then these functions are unable to poll the BMP280's status register quickly enough. In this case, it is possible to simply read the barometer's latest results without checking the status register with the following functions:
+However, these function only operate correctly and efficiently if your Arduino sketch's loop() time is fast enough (<35ms). If your loop() time is slow then these functions are unable to poll the BMP280's status register quickly enough. In this case, it is possible to simply read the barometer's latest results without checking the status register with the following functions:
 
 ```
 bmp280.getCurrentMeasurements(temperature, pressure, altitude);	// Acquire the current temperature, pressue and altitude measurements
