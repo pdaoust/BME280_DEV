@@ -9,6 +9,7 @@
 	V1.0.3 -- Addition of SPI write and read byte masks
 	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
+	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -70,14 +71,14 @@ class Device{
 	private:
 		Comms comms;																								// Communications bus: I2C or SPI
 		uint8_t address;																						// The device I2C address
-		uint8_t cs;																									// The SPI chip select pin	
-		uint32_t spiClockSpeed;																			// The SPI clock speed
-		SPIClass* spi;																							// Pointer to the SPI class
-		const uint8_t WRITE_MASK = 0x7F;														// Sub-address write mask for SPI communications
-		const uint8_t READ_MASK  = 0x80;														// Sub-address read mask for SPI communications
+		uint8_t cs;																									// The SPI chip select pin
 #ifdef ARDUINO_ARCH_ESP32
 		uint8_t spiPort;																						// SPI port type VSPI or HSPI
 #endif
+		SPIClass* spi;																							// Pointer to the SPI class
+		uint32_t spiClockSpeed;																			// The SPI clock speed
+		const uint8_t WRITE_MASK = 0x7F;														// Sub-address write mask for SPI communications
+		const uint8_t READ_MASK  = 0x80;														// Sub-address read mask for SPI communications
 #if defined ARDUINO_ARCH_ESP8266 || defined ARDUINO_ARCH_ESP32
 		uint8_t sda, scl;																						// Software I2C SDA and SCL pins 
 #endif
