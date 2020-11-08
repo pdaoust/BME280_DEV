@@ -9,6 +9,7 @@
 	V1.0.3 -- Addition of SPI write and read byte masks
 	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
+	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -128,7 +129,7 @@ void Device::writeByte(uint8_t subAddress, uint8_t data)
 
 uint8_t Device::readByte(uint8_t subAddress)												// Read a byte from the sub-address using I2C
 {
-  uint8_t data;
+  uint8_t data = 0x00;
 	if (comms == I2C_COMMS)																		
 	{
 		Wire.beginTransmission(address);         
