@@ -21,7 +21,6 @@
 						 getCurrentAltitude() and getCurrentMeasurements() functions,
 						 to allow the BMP280 to be read directly without checking the measuring bit
 	V1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
-	V1.0.19 -- Modification to allow ESP8266 SPI operation, thanks to Adam9850 for raising this issue
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
