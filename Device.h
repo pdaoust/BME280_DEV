@@ -10,6 +10,7 @@
 	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
+	V1.0.7 -- Modification to allow ESP8266 SPI operation, thanks to Adam9850 for raising this issue
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
