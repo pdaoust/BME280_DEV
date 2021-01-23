@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.19 -- Modification to allow ESP8266 SPI operation, thanks to Adam9850 for raising this issue
 - Version 1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
 - Version 1.0.17 -- Added getCurrentTemperature(), getCurrentPressure(), getCurrentTempPres() 
 						 				getCurrentAltitude() and getCurrentMeasurements() functions,
