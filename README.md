@@ -75,16 +75,16 @@ Simply include the BMP280_DEV.h file at the beginning of your sketch:
 #include <BMP280_DEV.h>
 ```
 
-Alternatively an auxiliary or secondary I2C (Wire) port can be specified:
-
-```
-BMP280_DEV bmp280(Wire1);  // Set up I2C communications on a secondary port
-```
-
 For I2C communication the BMP280_DEV object is normally created (instantiated) without parameters:
 
 ```
 BMP280_DEV bmp280;	// Set up I2C communications
+```
+
+Alternatively an auxiliary or secondary I2C (Wire) port can be specified:
+
+```
+BMP280_DEV bmp280(Wire1);  // Set up I2C communications on a secondary port
 ```
 
 By default the library uses the BMP280's I2C address 0x77. (To use the alternate I2C address: 0x76, see the begin() function below.
