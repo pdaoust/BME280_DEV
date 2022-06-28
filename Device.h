@@ -10,6 +10,7 @@
 	V1.0.4 -- Modification to allow user-defined pins for I2C operation on the ESP8266
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
+	V1.0.7 -- Allow for additional TwoWire instances
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,7 +53,7 @@ enum Comms { I2C_COMMS, SPI_COMMS };
 
 class Device{
 	public:
-		Device();																										// Device object for I2C operation
+		Device(TwoWire& twoWire);																		// Device object for I2C operation
 #ifdef ARDUINO_ARCH_ESP8266
 		Device(uint8_t sda, uint8_t scl);														// Device object for ESP8266 I2C operation with user-defined pins
 #endif
@@ -75,6 +76,7 @@ class Device{
 #ifdef ARDUINO_ARCH_ESP32
 		uint8_t spiPort;																						// SPI port type VSPI or HSPI
 #endif
+		TwoWire* i2c;																								// Pointer to the Wire class
 		SPIClass* spi;																							// Pointer to the SPI class
 		uint32_t spiClockSpeed;																			// The SPI clock speed
 		const uint8_t WRITE_MASK = 0x7F;														// Sub-address write mask for SPI communications
