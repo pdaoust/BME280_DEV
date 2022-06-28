@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.19 -- Allow for additional TwoWire instances
 - Version 1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
 - Version 1.0.17 -- Added getCurrentTemperature(), getCurrentPressure(), getCurrentTempPres() 
 						 				getCurrentAltitude() and getCurrentMeasurements() functions,
@@ -72,6 +73,12 @@ Simply include the BMP280_DEV.h file at the beginning of your sketch:
 
 ```
 #include <BMP280_DEV.h>
+```
+
+Alternatively an auxiliary or secondary I2C (Wire) port can be specified:
+
+```
+BMP280_DEV bmp280(Wire1);  // Set up I2C communications on a secondary port
 ```
 
 For I2C communication the BMP280_DEV object is normally created (instantiated) without parameters:
