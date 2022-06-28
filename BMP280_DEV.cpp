@@ -21,6 +21,7 @@
 						 getCurrentAltitude() and getCurrentMeasurements() functions,
 						 to allow the BMP280 to be read directly without checking the measuring bit
 	V1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
+	V1.0.19 -- Allow for additional TwoWire instances
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,7 +47,7 @@
 // BMP280_DEV Class Constructors
 ////////////////////////////////////////////////////////////////////////////////
 
-BMP280_DEV::BMP280_DEV() { setI2CAddress(BMP280_I2C_ADDR); }		// Constructor for I2C communications		
+BMP280_DEV::BMP280_DEV(TwoWire& twoWire) : Device(twoWire) { setI2CAddress(BMP280_I2C_ADDR); }		// Constructor for I2C communications		
 #ifdef ARDUINO_ARCH_ESP8266
 BMP280_DEV::BMP280_DEV(uint8_t sda, uint8_t scl) : Device(sda, scl) { setI2CAddress(BMP280_I2C_ADDR); } 	// Constructor for I2C comms on ESP8266
 #endif
@@ -61,10 +62,10 @@ BMP280_DEV::BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) : Device
 ////////////////////////////////////////////////////////////////////////////////
 
 uint8_t BMP280_DEV::begin(Mode mode, 															// Initialise BMP280 device settings
-											Oversampling presOversampling, 
-											Oversampling tempOversampling,
-											IIRFilter iirFilter,
-											TimeStandby timeStandby)
+													Oversampling presOversampling, 
+													Oversampling tempOversampling,
+													IIRFilter iirFilter,
+													TimeStandby timeStandby)
 {
 	initialise();																											// Call the Device base class "initialise" function
 	if (readByte(BMP280_DEVICE_ID) != DEVICE_ID)              				// Check the device ID
