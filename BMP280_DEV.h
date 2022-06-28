@@ -21,6 +21,7 @@
 						 getCurrentAltitude() and getCurrentMeasurements() functions,
 						 to allow the BMP280 to be read directly without checking the measuring bit
 	V1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
+	V1.0.19 -- Allow for additional TwoWire instances
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -123,14 +124,14 @@ enum TimeStandby {
 
 class BMP280_DEV : public Device {															// Derive the BMP280_DEV class from the Device class
 	public:
-		BMP280_DEV();																								// BMP280_DEV object for I2C operation
+		BMP280_DEV(TwoWire& twoWire = Wire);												// BMP280_DEV object for I2C operation
 #ifdef ARDUINO_ARCH_ESP8266
 		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP8266 I2C operation with user-defined pins
 #endif
 		BMP280_DEV(uint8_t cs);																			// BMP280_DEV object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
 		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP32 I2C operation with user-defined pins
-		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
+		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass = SPI1);	// BMP280_DEV object for SPI1 with supplied SPIClass object
 #endif
 		uint8_t begin(Mode mode = SLEEP_MODE, 												// Initialise the barometer with arguments
 									Oversampling presOversampling = OVERSAMPLING_X16, 
