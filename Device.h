@@ -11,6 +11,7 @@
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
 	V1.0.7 -- Allow for additional TwoWire instances
+	V1.0.8 -- Fixed uninitialised "Wire" pointer for ESP8266/ESP32 with user defined I2C pins 
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,11 +56,11 @@ class Device{
 	public:
 		Device(TwoWire& twoWire);																		// Device object for I2C operation
 #ifdef ARDUINO_ARCH_ESP8266
-		Device(uint8_t sda, uint8_t scl);														// Device object for ESP8266 I2C operation with user-defined pins
+		Device(uint8_t sda, uint8_t scl, TwoWire& twoWire);					// Device object for ESP8266 I2C operation with user-defined pins
 #endif
 		Device(uint8_t cs);																					// Device object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
-		Device(uint8_t sda, uint8_t scl);														// Device object for ESP32 I2C operation with user-defined pins
+		Device(uint8_t sda, uint8_t scl, TwoWire& twoWire);					// Device object for ESP32 I2C operation with user-defined pins
 		Device(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);		// Device object for ESP32 HSPI operation with supplied SPI object
 #endif		
 		void setClock(uint32_t clockSpeed);													// Set the I2C/SPI clock speed
