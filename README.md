@@ -32,6 +32,7 @@ This BMP280_DEV library offers the following features:
 <a name="version"></a>
 ## __Version__
 
+- Version 1.0.21 -- Fixed uninitialised "Wire" pointer for ESP8266/ESP32 with user defined I2C pins
 - Version 1.0.20 -- Removed default parameter causing ESP32 compilation error with user defined I2C pins
 - Version 1.0.19 -- Allow for additional TwoWire instances
 - Version 1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
