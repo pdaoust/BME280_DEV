@@ -23,6 +23,7 @@
 	V1.0.18 -- Initialise "device" constructor member variables in the same order they are declared
 	V1.0.19 -- Allow for additional TwoWire instances
 	V1.0.20 -- Removed default parameter causing ESP32 compilation error with user defined I2C pins
+	V1.0.21 -- Fixed uninitialised "Wire" pointer for ESP8266/ESP32 with user defined I2C pins 
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -127,11 +128,11 @@ class BMP280_DEV : public Device {															// Derive the BMP280_DEV class 
 	public:
 		BMP280_DEV(TwoWire& twoWire = Wire);												// BMP280_DEV object for I2C operation
 #ifdef ARDUINO_ARCH_ESP8266
-		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP8266 I2C operation with user-defined pins
+		BMP280_DEV(uint8_t sda, uint8_t scl, TwoWire& twoWire = Wire);	// BMP280_DEV object for ESP8266 I2C operation with user-defined pins
 #endif
 		BMP280_DEV(uint8_t cs);																			// BMP280_DEV object for SPI operation
 #ifdef ARDUINO_ARCH_ESP32
-		BMP280_DEV(uint8_t sda, uint8_t scl);												// BMP280_DEV object for ESP32 I2C operation with user-defined pins
+		BMP280_DEV(uint8_t sda, uint8_t scl, TwoWire& twoWire = Wire);	// BMP280_DEV object for ESP32 I2C operation with user-defined pins
 		BMP280_DEV(uint8_t cs, uint8_t spiPort, SPIClass& spiClass);	// BMP280_DEV object for SPI1 with supplied SPIClass object
 #endif
 		uint8_t begin(Mode mode = SLEEP_MODE, 												// Initialise the barometer with arguments
