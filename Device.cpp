@@ -11,6 +11,7 @@
 	V1.0.5 -- Modification to allow user-defined pins for I2C operation on the ESP32
 	V1.0.6 -- Initialise "device" constructor member variables in the same order they are declared
 	V1.0.7 -- Allow for additional TwoWire instances
+	V1.0.8 -- Fixed uninitialised "Wire" pointer for ESP8266/ESP32 with user defined I2C pins 
 	
 	The MIT License (MIT)
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,11 +39,13 @@
 
 Device::Device(TwoWire& twoWire) : comms(I2C_COMMS), i2c(&twoWire) {}								// Initialise constructor for I2C communications
 #ifdef ARDUINO_ARCH_ESP8266
-Device::Device(uint8_t sda, uint8_t scl) : comms(I2C_COMMS_DEFINED_PINS), sda(sda), scl(scl) {}	// Constructor for ESP8266 I2C with user-defined pins
+Device::Device(uint8_t sda, uint8_t scl, TwoWire& twoWire) : 												// Constructor for ESP8266 I2C with user-defined pins
+	comms(I2C_COMMS_DEFINED_PINS), i2c(&twoWire), sda(sda), scl(scl) {}	
 #endif
 Device::Device(uint8_t cs) : comms(SPI_COMMS), cs(cs), spiClockSpeed(1000000) {}		// Constructor for SPI communications
 #ifdef ARDUINO_ARCH_ESP32																														
-Device::Device(uint8_t sda, uint8_t scl) : comms(I2C_COMMS_DEFINED_PINS), sda(sda), scl(scl) {}	// Constructor for ESP32 I2C with user-defined pins
+Device::Device(uint8_t sda, uint8_t scl, TwoWire& twoWire) : 
+	comms(I2C_COMMS_DEFINED_PINS), i2c(&twoWire), sda(sda), scl(scl) {}								// Constructor for ESP32 I2C with user-defined pins
 Device::Device(uint8_t cs, uint8_t spiPort, SPIClass& spiClass) 										// Constructor for ESP32 HSPI communications
 	: comms(SPI_COMMS), cs(cs), spiPort(spiPort), spi(&spiClass), spiClockSpeed(1000000) {}
 #endif
