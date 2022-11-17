@@ -281,7 +281,7 @@ void loop()
     Serial.print(pressure);    
     Serial.print(F("hPa   "));
     Serial.print(altitude);
-    Serial.println(F(m"));
+    Serial.println(F("m"));
   }
 }
 ```
