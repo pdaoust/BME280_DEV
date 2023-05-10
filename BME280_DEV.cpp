@@ -196,9 +196,9 @@ uint8_t BME280_DEV::getHumidity(float &humidity)										// Get the pressure
 
 void BME280_DEV::getCurrentTempPresHum(float &temperature, float &pressure, float &humidity)	// Get the current temperature and pressure without checking the measuring bit
 {
-	uint8_t data[9];                                                  // Create a data buffer
-	readBytes(BME280_PRES_MSB, &data[0], 9);             							// Read the temperature and pressure data
-	int32_t adcHum = (int32_t)data[6] << 12 | (int32_t)data[7] << 4 | (int32_t)data[8] >> 4;
+	uint8_t data[8];                                                  // Create a data buffer
+	readBytes(BME280_PRES_MSB, &data[0], 8);             							// Read the temperature, pressure, and humidity data
+	int32_t adcHum = (int32_t)data[6] << 8 | (int32_t)data[7];
 	int32_t adcTemp = (int32_t)data[3] << 12 | (int32_t)data[4] << 4 | (int32_t)data[5] >> 4;  // Copy the temperature and pressure data into the adc variables
 	int32_t adcPres = (int32_t)data[0] << 12 | (int32_t)data[1] << 4 | (int32_t)data[2] >> 4;
 	int32_t hum = bme280_compensate_H_int32(adcHum);
