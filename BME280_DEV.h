@@ -172,6 +172,7 @@ class BME280_DEV : public Device {															// Derive the BME280_DEV class 
     protected:
     private:
         void setMode(Mode mode);																		// Set the barometer mode
+        void setCtrlHumRegister(Oversampling humOversampling);
         void setCtrlMeasRegister(Mode mode, Oversampling presOversampling, Oversampling tempOversamping);		// Set the BME280 control and measurement register
         void setConfigRegister(IIRFilter iirFilter, TimeStandby timeStandby);		// Set the BME280 configuration register
         uint8_t dataReady();																				// Checks if a measurement is ready
