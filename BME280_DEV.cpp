@@ -303,7 +303,7 @@ uint8_t BME280_DEV::dataReady()																			// Check if a measurement is r
 ////////////////////////////////////////////////////////////////////////////////
 
 // Returns humidity in %RH as unsigned 32 bit integer in Q22.10 format (22 integer and 10 fractional bits).
-// Output value of “47445” represents 47445/1024 = 46.333 %RH
+// Output value of "47445" represents 47445/1024 = 46.333 %RH
 uint32_t BME280_DEV::bme280_compensate_H_int32(int32_t adc_H)
 {
   int32_t v_x1_u32r;
@@ -320,7 +320,7 @@ uint32_t BME280_DEV::bme280_compensate_H_int32(int32_t adc_H)
   return (uint32_t)(v_x1_u32r>>12);
 }
 
-// Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
+// Returns temperature in DegC, resolution is 0.01 DegC. Output value of "5123" equals 51.23 DegC.
 // t_fine carries fine temperature as global value
 int32_t BME280_DEV::bme280_compensate_T_int32(int32_t adc_T)
 {
@@ -334,7 +334,7 @@ int32_t BME280_DEV::bme280_compensate_T_int32(int32_t adc_T)
 }
 
 // Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
-// Output value of “24674867” represents 24674867/256 = 96386.2 Pa = 963.862 hPa
+// Output value of "24674867" represents 24674867/256 = 96386.2 Pa = 963.862 hPa
 uint32_t BME280_DEV::bme280_compensate_P_int64(int32_t adc_P)
 {
   int64_t var1, var2, p;
