@@ -189,6 +189,12 @@ class BME280_DEV : public Device {															// Derive the BME280_DEV class 
             int16_t  dig_P7;
             int16_t  dig_P8;
             int16_t  dig_P9;
+            uint8_t  dig_H1;
+            int16_t  dig_H2;
+            uint8_t  dig_H3;
+            int16_t  dig_H4;
+            int16_t  dig_H5;
+            int8_t  dig_H6;
         } params;
             
         union {																											// Copy of the BME280's configuration register

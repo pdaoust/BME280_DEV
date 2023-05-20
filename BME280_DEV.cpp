@@ -308,13 +308,13 @@ uint32_t BME280_DEV::bme280_compensate_H_int32(int32_t adc_H)
 {
   int32_t v_x1_u32r;
   v_x1_u32r = (t_fine - ((int32_t)76800));
-  v_x1_u32r = (((((adc_H << 14) - (((int32_t)dig_H4) << 20) - (((int32_t)dig_H5) *
+  v_x1_u32r = (((((adc_H << 14) - (((int32_t)params.dig_H4) << 20) - (((int32_t)params.dig_H5) *
   v_x1_u32r)) + ((int32_t)16384)) >> 15) * (((((((v_x1_u32r *
-  ((int32_t)dig_H6)) >> 10) * (((v_x1_u32r * ((int32_t)dig_H3)) >> 11) +
-  ((int32_t)32768))) >> 10) + ((int32_t)2097152)) * ((int32_t)dig_H2) +
+  ((int32_t)params.dig_H6)) >> 10) * (((v_x1_u32r * ((int32_t)dig_H3)) >> 11) +
+  ((int32_t)32768))) >> 10) + ((int32_t)2097152)) * ((int32_t)params.dig_H2) +
   8192) >> 14));
   v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
-  ((int32_t)dig_H1)) >> 4));
+  ((int32_t)params.dig_H1)) >> 4));
   v_x1_u32r = (v_x1_u32r < 0 ? 0 : v_x1_u32r);
   v_x1_u32r = (v_x1_u32r > 419430400 ? 419430400 : v_x1_u32r);
   return (uint32_t)(v_x1_u32r>>12);
